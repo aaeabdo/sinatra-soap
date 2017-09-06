@@ -6,6 +6,7 @@ require "sinatra/soap/dsl_methods"
 require "sinatra/soap/helper_methods"
 require "sinatra/soap/request"
 require "sinatra/soap/response"
+require "sinatra/soap/support_methods"
 require "builder"
 
 
@@ -13,6 +14,7 @@ module Sinatra
   module Soap
 
     include DslMethods
+    include SupportMethods
 
     def self.registered(app)
       app.helpers Soap::HelperMethods
@@ -27,12 +29,13 @@ module Sinatra
         call_action_block
       end
 
-      app.get(app.settings.wsdl_route) do 
+      app.get(app.settings.wsdl_route) do
         content_type 'text/xml'
         get_wsdl
       end
     end
   end
   Delegator.delegate :soap
+  Delegator.delegate :soap_helpers
   register Soap
 end

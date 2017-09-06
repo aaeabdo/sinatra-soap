@@ -70,7 +70,7 @@ module Sinatra
 
       def call_action_block
         request = Soap::Request.new(env, request, params, self)
-        if defined?(logger) && logger
+        if defined?(logger) && logger && logger.respond_to?(:info)
           logger.info "SOAP Request: #{request.action}"
         end
         response = request.execute

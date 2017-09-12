@@ -79,7 +79,7 @@ module Sinatra
           params: response.params,
           soap_headers: response.headers
         }
-      rescue Soap::Error => e
+      rescue Exception, Soap::Error => e
         if defined?(logger) && logger
           logger.error "SOAP Error: #{e.message} - Action: #{env['HTTP_SOAPACTION']}"
         end

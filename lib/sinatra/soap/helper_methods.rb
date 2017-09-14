@@ -79,7 +79,7 @@ module Sinatra
           params: response.params,
           soap_headers: response.headers
         }
-      rescue Exception, Soap::Error => e
+      rescue Soap::Error => e
         if defined?(logger) && logger
           logger.error "SOAP Error: #{e.message} - Action: #{env['HTTP_SOAPACTION']}"
         end
@@ -90,7 +90,8 @@ module Sinatra
         if defined?(settings.wsdl_path)
           path = File.join(settings.public_folder, settings.wsdl_path)
           if File.exist?(path)
-            File.read(path)
+            action_end_point = "http://#{request.host_with_port}#{settings.endpoint}"
+            File.read(path).gsub("ACTION_END_POINT", action_end_point)
           else
             raise "No wsdl file"
           end
